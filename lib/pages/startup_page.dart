@@ -38,9 +38,9 @@ class _StartupState extends State<Startup> {
               child: Container(
                 height: 50,
                 width: 400,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: Colors.black,
-                  borderRadius: BorderRadius.all(Radius.circular(25)),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(10),
