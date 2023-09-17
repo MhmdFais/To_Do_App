@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:to_do/components/main_buttons.dart';
-import 'package:to_do/pages/login_page.dart';
+import 'package:to_do/pages/login_toggle_page.dart';
 import '../components/colors.dart';
 
 class Startup extends StatefulWidget {
@@ -39,7 +39,7 @@ class _StartupState extends State<Startup> {
                 height: 50,
                 width: 400,
                 decoration: BoxDecoration(
-                  color: Colors.black,
+                  color: Colours().buttonFill,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
@@ -50,7 +50,7 @@ class _StartupState extends State<Startup> {
                       style: GoogleFonts.ubuntu(
                         fontSize: 25,
                         //fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: Colours().selectedText,
                       ),
                     ),
                   ),
