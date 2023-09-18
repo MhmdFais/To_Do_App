@@ -41,6 +41,14 @@ class _StartupState extends State<Startup> {
                 decoration: BoxDecoration(
                   color: Colours().buttonFill,
                   borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colours().buttonShadow,
+                      spreadRadius: 2,
+                      blurRadius: 2,
+                      offset: const Offset(2, 2),
+                    ),
+                  ],
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(10),

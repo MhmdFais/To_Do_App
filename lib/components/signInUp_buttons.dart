@@ -19,14 +19,24 @@ class StyledButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 40,
-      width: 115,
+      width: 120,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
         border: Border.all(
-          color: Colors.black,
+          color: Colors.orangeAccent,
           width: 2,
         ),
         color: isSelected ? Colours().buttonFill : Colors.transparent,
+        boxShadow: isSelected
+            ? [
+                BoxShadow(
+                  color: Colours().buttonShadow,
+                  spreadRadius: 2,
+                  blurRadius: 2,
+                  offset: Offset(2, 2),
+                ),
+              ]
+            : [], // No shadow for unselected buttons
       ),
       child: ElevatedButton(
         onPressed: onPressed,
@@ -40,7 +50,7 @@ class StyledButton extends StatelessWidget {
         child: Text(
           text,
           style: GoogleFonts.ubuntu(
-            fontSize: 22,
+            fontSize: 24,
             color:
                 isSelected ? Colours().selectedText : Colours().unSelectedText,
           ),

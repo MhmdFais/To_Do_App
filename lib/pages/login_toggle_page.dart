@@ -27,6 +27,8 @@ class _LoginState extends State<Login> {
       backgroundColor: Colours().primary,
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const SizedBox(height: 50),
             Padding(
