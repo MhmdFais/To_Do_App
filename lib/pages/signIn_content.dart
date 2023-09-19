@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:to_do/components/colors.dart';
+import 'package:to_do/components/main_buttons.dart';
+import 'package:to_do/components/signin_with.dart';
 import 'package:to_do/components/text_field.dart';
 
 class SignInContent extends StatefulWidget {
@@ -40,7 +42,7 @@ class _SignInContentState extends State<SignInContent> {
               color: Colours().unSelectedText,
             ),
           ),
-          const SizedBox(height: 50),
+          const SizedBox(height: 30),
           //email
           MyTextField(
             controller: usernameController,
@@ -66,14 +68,14 @@ class _SignInContentState extends State<SignInContent> {
                   'Forgot Password?',
                   style: GoogleFonts.ubuntu(
                     fontSize: 18,
-                    color: Colours().unSelectedText,
+                    color: Colours().forgotPassword,
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 20),
-          //sign in with google
+          const SizedBox(height: 10),
+          //sign in with google and apple
           Column(
             children: [
               Center(
@@ -85,13 +87,23 @@ class _SignInContentState extends State<SignInContent> {
                   ),
                 ),
               ),
-              const SizedBox(width: 10),
-              Image.asset(
-                'assets/images/google.png',
-                width: 5,
-                height: 5,
+              const SizedBox(height: 15),
+              const SignInWith(
+                text: 'Sign in with Google',
+                image: 'lib/images/google.png',
+              ),
+              const SizedBox(height: 15),
+              const SignInWith(
+                text: 'Sign in with Apple',
+                image: 'lib/images/apple.png',
               ),
             ],
+          ),
+          const SizedBox(height: 50),
+          //sign in button
+          MainButton(
+            onTap: () {},
+            text: 'Sign In',
           ),
         ],
       ),

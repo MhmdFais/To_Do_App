@@ -5,12 +5,15 @@ class Colours extends StatelessWidget {
   Colours({super.key});
 
   //final Color primary = const Color(0xFFE5E5E5);
-  final Color primary = Colors.orangeAccent.shade100;
+  //final Color primary = Colors.orangeAccent.shade100;
   final Color buttonFill = Colors.orangeAccent;
   final Color unSelectedText = Colors.black;
   final Color selectedText = Colors.black;
   final Color buttonShadow = Colors.black.withOpacity(0.5);
-  final Color forgotPassword = Colors.tealAccent.shade700;
+  final Color forgotPassword = Colors.blue;
+  //final Color borderColor = const Color.fromARGB(255, 214, 131, 23);
+  final Color primary = Colors.grey.shade100;
+  final Color borderColor = Colors.orangeAccent;
 
   @override
   Widget build(BuildContext context) {

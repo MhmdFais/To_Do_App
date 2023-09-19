@@ -1,13 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:to_do/components/colors.dart';
+import 'package:to_do/components/colors.dart';
 
 class MainButton extends StatelessWidget {
   final void Function()? onTap;
+  final String text;
 
   const MainButton({
     super.key,
     required this.onTap,
+    required this.text,
   });
 
   @override
@@ -17,19 +21,26 @@ class MainButton extends StatelessWidget {
       child: Container(
         height: 50,
         width: 400,
-        decoration: const BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.all(Radius.circular(25)),
+        decoration: BoxDecoration(
+          color: Colours().buttonFill,
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+          boxShadow: [
+            BoxShadow(
+              color: Colours().buttonShadow,
+              offset: const Offset(2, 4),
+              blurRadius: 3,
+            ),
+          ],
         ),
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Center(
             child: Text(
-              'Start',
+              text,
               style: GoogleFonts.ubuntu(
                 fontSize: 25,
                 //fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Colours().selectedText,
               ),
             ),
           ),

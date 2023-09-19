@@ -32,8 +32,8 @@ class StyledButton extends StatelessWidget {
                 BoxShadow(
                   color: Colours().buttonShadow,
                   spreadRadius: 2,
-                  blurRadius: 2,
-                  offset: Offset(2, 2),
+                  blurRadius: 1,
+                  offset: const Offset(2, 2),
                 ),
               ]
             : [], // No shadow for unselected buttons

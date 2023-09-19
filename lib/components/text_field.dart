@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:to_do/components/colors.dart';
 
 class MyTextField extends StatelessWidget {
   final controller;
@@ -20,8 +21,8 @@ class MyTextField extends StatelessWidget {
       obscureText: obscureText,
       decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: Color.fromARGB(255, 214, 131, 23),
+            borderSide: BorderSide(
+              color: Colours().borderColor,
             ),
             borderRadius: BorderRadius.circular(50),
           ),

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "641103722840",
+    "project_id": "planitt",
+    "storage_bucket": "planitt.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:641103722840:android:10b0bd011d2d9af36e8d2d",
+        "android_client_info": {
+          "package_name": "com.example.to_do"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZ7PVOlVRu3Pcr4jyV4vJumuoAJ_X0kfM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
