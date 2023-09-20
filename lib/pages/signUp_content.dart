@@ -66,7 +66,7 @@ class _SignUpContentState extends State<SignUpContent> {
           //sign up button
           MainButton(
             onTap: () {},
-            text: 'Sign Up',
+            text: 'Next',
           ),
         ],
       ),

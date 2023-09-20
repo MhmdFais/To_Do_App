@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -5,6 +6,7 @@ import 'package:to_do/components/colors.dart';
 import 'package:to_do/components/main_buttons.dart';
 import 'package:to_do/components/signin_with.dart';
 import 'package:to_do/components/text_field.dart';
+import 'package:to_do/pages/home_page.dart';
 
 class SignInContent extends StatefulWidget {
   const SignInContent({super.key});
@@ -16,6 +18,24 @@ class SignInContent extends StatefulWidget {
 class _SignInContentState extends State<SignInContent> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+
+  //sign in user
+  void userSignIn() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: usernameController.text,
+        password: passwordController.text,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        //wrongEmailOrPassword();
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        //wrongEmailOrPassword();
+        print('Wrong password provided for that user.');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +122,7 @@ class _SignInContentState extends State<SignInContent> {
           const SizedBox(height: 50),
           //sign in button
           MainButton(
-            onTap: () {},
+            onTap: userSignIn,
             text: 'Sign In',
           ),
         ],

@@ -12,7 +12,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  PageController _pageController = PageController();
   int _currentPage = 0;
 
   void _changePage(int page) {
