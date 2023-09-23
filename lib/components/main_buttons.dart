@@ -26,10 +26,10 @@ class MainButton extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(50)),
           boxShadow: [
             BoxShadow(
-              color: Colours().buttonShadow,
-              offset: const Offset(2, 4),
-              blurRadius: 3,
-            ),
+                color: Colours().buttonShadow,
+                offset: const Offset(2, 4),
+                blurRadius: 3,
+                spreadRadius: 2),
           ],
         ),
         child: Padding(

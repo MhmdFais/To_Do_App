@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:to_do/components/main_buttons.dart';
 import 'package:to_do/pages/login_toggle_page.dart';
 import '../components/colors.dart';
 
