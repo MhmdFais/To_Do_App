@@ -6,8 +6,8 @@ import 'package:to_do/components/colors.dart';
 import 'package:to_do/components/main_buttons.dart';
 import 'package:to_do/components/signin_with.dart';
 import 'package:to_do/components/text_field.dart';
+import 'package:to_do/pages/forgot_pass_phone.dart';
 import 'package:to_do/pages/forgot_password.dart';
-import 'package:to_do/pages/home_page.dart';
 
 class SignInContent extends StatefulWidget {
   const SignInContent({super.key});
@@ -115,11 +115,116 @@ class _SignInContentState extends State<SignInContent> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 TextButton(
+                  //popup for email or phone number
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ForgotPassword(),
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) => Container(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 40),
+                            //Text
+                            Center(
+                              child: Text(
+                                'Make Selection!',
+                                style: GoogleFonts.ubuntu(
+                                  fontSize: 40,
+                                  color: Colours().unSelectedText,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              'Select one of the options to given to reset your password',
+                              style: GoogleFonts.ubuntu(
+                                fontSize: 22,
+                                color: Colours().unSelectedText,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 25),
+                            GestureDetector(
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const ForgotPassword(),
+                                ),
+                              ),
+                              child: Container(
+                                height: 70,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  //color: Colours().primary,
+                                  borderRadius: BorderRadius.circular(50),
+                                  border: Border.all(
+                                    color: Colours().borderColor,
+                                    width: 2,
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    const SizedBox(width: 20),
+                                    const Icon(
+                                      Icons.mail_outline_rounded,
+                                      size: 40,
+                                    ),
+                                    const SizedBox(width: 15),
+                                    Text(
+                                      'Email me',
+                                      style: GoogleFonts.ubuntu(
+                                        fontSize: 30,
+                                        color: Colours().unSelectedText,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ForgotPasswordPhone(),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                height: 70,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  //color: Colours().primary,
+                                  borderRadius: BorderRadius.circular(50),
+                                  border: Border.all(
+                                    color: Colours().borderColor,
+                                    width: 2,
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    const SizedBox(width: 20),
+                                    const Icon(
+                                      Icons.phone,
+                                      size: 40,
+                                    ),
+                                    const SizedBox(width: 15),
+                                    Text(
+                                      'Text me',
+                                      style: GoogleFonts.ubuntu(
+                                        fontSize: 30,
+                                        color: Colours().unSelectedText,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
