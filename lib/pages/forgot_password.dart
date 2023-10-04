@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:to_do/components/colors.dart';
 import 'package:to_do/components/main_buttons.dart';
 import 'package:to_do/components/text_field.dart';
+import 'package:to_do/pages/otp_page.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
@@ -75,7 +76,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               //reset password button
               const SizedBox(height: 145),
               MainButton(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const OTPScreen(),
+                    ),
+                  );
+                },
                 text: 'Next',
               ),
             ],
