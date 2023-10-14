@@ -6,6 +6,7 @@ import 'package:to_do/components/colors.dart';
 import 'package:to_do/components/main_buttons.dart';
 import 'package:to_do/components/text_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:to_do/pages/home_page.dart';
 
 class SignUpContent extends StatefulWidget {
   const SignUpContent({super.key});
@@ -32,11 +33,14 @@ class _SignUpContentState extends State<SignUpContent> {
       //add user to firestore
       if (credential.user != null) {
         addUserToFirestore();
+        navigateToHome();
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
+        wrongEmailOrPassword();
         print('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
+        wrongEmailOrPassword();
         print('The account already exists for that email.');
       }
     } catch (e) {
@@ -51,6 +55,43 @@ class _SignUpContentState extends State<SignUpContent> {
       'firstName': firstNameController.text,
       'lastName': lastNameController.text,
     });
+  }
+
+  //wrong email or password dialog box
+  void wrongEmailOrPassword() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'Wrong email or password',
+              style: GoogleFonts.ubuntu(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colours().unSelectedText,
+              ),
+            ),
+            content: Text(
+              'Please check your email and try again',
+              style: GoogleFonts.ubuntu(
+                fontSize: 15,
+                //fontWeight: FontWeight.bold,
+                color: Colours().unSelectedText,
+              ),
+            ),
+          );
+        });
+  }
+
+  //navigate to home page
+  void navigateToHome() {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) {
+          return const Home();
+        },
+      ),
+    );
   }
 
   @override

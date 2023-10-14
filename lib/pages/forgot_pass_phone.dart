@@ -94,7 +94,9 @@ class _ForgotPasswordPhoneState extends State<ForgotPasswordPhone> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const OTPScreen(),
+                      builder: (context) => const OTPScreen(
+                        text: 'Phone Number',
+                      ),
                     ),
                   );
                 },

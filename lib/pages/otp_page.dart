@@ -6,7 +6,9 @@ import 'package:to_do/components/colors.dart';
 import 'package:to_do/components/main_buttons.dart';
 
 class OTPScreen extends StatelessWidget {
-  const OTPScreen({super.key});
+  final String text;
+
+  const OTPScreen({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +47,7 @@ class OTPScreen extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                'Enter the 6-digit code sent to your phone number',
+                'Enter the 6-digit code sent to your $text',
                 style: GoogleFonts.ubuntu(
                   fontSize: 15,
                   //fontWeight: FontWeight.bold,

@@ -38,12 +38,8 @@ class _SignInContentState extends State<SignInContent> {
         password: passwordController.text,
       );
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
+      if (e.code == 'user-not-found' || e.code == 'wrong-password') {
         wrongEmailOrPassword();
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        wrongEmailOrPassword();
-        print('Wrong password provided for that user.');
       }
     }
 
@@ -58,9 +54,18 @@ class _SignInContentState extends State<SignInContent> {
         builder: (context) {
           return AlertDialog(
             title: Text(
-              'Wrong Email or Password',
+              'Wrong email or password',
               style: GoogleFonts.ubuntu(
-                fontSize: 25,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colours().unSelectedText,
+              ),
+            ),
+            content: Text(
+              'Please check your email and password and try again',
+              style: GoogleFonts.ubuntu(
+                fontSize: 15,
+                //fontWeight: FontWeight.bold,
                 color: Colours().unSelectedText,
               ),
             ),
@@ -117,73 +122,10 @@ class _SignInContentState extends State<SignInContent> {
                 TextButton(
                   //popup for email or phone number
                   onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      backgroundColor: Colours().primary,
-                      builder: (context) => Container(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 40),
-                            //Text
-                            Center(
-                              child: Text(
-                                'Make Selection!',
-                                style: GoogleFonts.ubuntu(
-                                  fontSize: 40,
-                                  color: Colours().unSelectedText,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              'Select one of the options to given to reset your password',
-                              style: GoogleFonts.ubuntu(
-                                fontSize: 22,
-                                color: Colours().unSelectedText,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 25),
-                            SelectionTiles(
-                              text: 'Email',
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const ForgotPassword(),
-                                  ),
-                                );
-                              },
-                              icons_selected: const Icon(
-                                Icons.email_outlined,
-                                //size: 40,
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            SelectionTiles(
-                              text: 'Phone Number',
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const ForgotPasswordPhone(),
-                                  ),
-                                );
-                              },
-                              icons_selected: const Icon(
-                                Icons.mobile_friendly_rounded,
-                                //size: 40,
-                              ),
-                            ),
-                          ],
-                        ),
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ForgotPassword(),
                       ),
                     );
                   },
