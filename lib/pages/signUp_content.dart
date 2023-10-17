@@ -23,6 +23,22 @@ class _SignUpContentState extends State<SignUpContent> {
   final lastNameController = TextEditingController();
 
   void createUserWithEmailAndPassword() async {
+    //check if the fields are empty
+    if (firstNameController.text.isEmpty ||
+        lastNameController.text.isEmpty ||
+        usernameController.text.isEmpty ||
+        passwordController.text.isEmpty ||
+        confirmPasswordController.text.isEmpty) {
+      wrongEmailOrPassword('Please fill all the fields');
+      return;
+    }
+
+    //check if the password and confirm password are same
+    if (passwordController.text != confirmPasswordController.text) {
+      wrongEmailOrPassword('Password and Confirm Password are not same');
+      return;
+    }
+
     try {
       final credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -30,21 +46,38 @@ class _SignUpContentState extends State<SignUpContent> {
         password: passwordController.text,
       );
 
-      //add user to firestore
+      //check if the email verification is send or not
       if (credential.user != null) {
+        //send email verification
+        await credential.user?.sendEmailVerification();
+
+        //add user to firestore
         addUserToFirestore();
-        navigateToHome();
+
+        //show dialog box
+        Message('Verification email has been sent to your email address.');
+
+        //navigate to home page
+        navigateToHomeIfEmailVerified();
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        wrongEmailOrPassword();
+        wrongEmailOrPassword('Weak password');
         print('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
-        wrongEmailOrPassword();
+        wrongEmailOrPassword('Email already in use');
         print('The account already exists for that email.');
       }
     } catch (e) {
       print(e);
+    }
+  }
+
+  //navigate to home page if email is verified
+  void navigateToHomeIfEmailVerified() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null && user.emailVerified) {
+      navigateToHome();
     }
   }
 
@@ -58,13 +91,13 @@ class _SignUpContentState extends State<SignUpContent> {
   }
 
   //wrong email or password dialog box
-  void wrongEmailOrPassword() {
+  void wrongEmailOrPassword(String text) {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: Text(
-              'Wrong email or password',
+              text,
               style: GoogleFonts.ubuntu(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -72,7 +105,25 @@ class _SignUpContentState extends State<SignUpContent> {
               ),
             ),
             content: Text(
-              'Please check your email and try again',
+              'Please try again',
+              style: GoogleFonts.ubuntu(
+                fontSize: 15,
+                //fontWeight: FontWeight.bold,
+                color: Colours().unSelectedText,
+              ),
+            ),
+          );
+        });
+  }
+
+  //other message dialog box
+  void Message(String text) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Text(
+              text,
               style: GoogleFonts.ubuntu(
                 fontSize: 15,
                 //fontWeight: FontWeight.bold,
