@@ -157,14 +157,9 @@ class _SignInContentState extends State<SignInContent> {
                   text: 'Sign in with Google',
                   image: 'lib/images/google.png',
                 ),
-                const SizedBox(height: 15),
-                const SignInWith(
-                  text: 'Sign in with Apple',
-                  image: 'lib/images/apple.png',
-                ),
               ],
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 110),
             //sign in button
             MainButton(
               onTap: userSignIn,
