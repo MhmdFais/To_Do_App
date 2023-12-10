@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:to_do/components/colors.dart';
 import 'package:to_do/components/main_buttons.dart';
-import 'package:to_do/components/selection_tile.dart';
 import 'package:to_do/components/signin_with.dart';
 import 'package:to_do/components/text_field.dart';
-import 'package:to_do/pages/forgot_pass_phone.dart';
 import 'package:to_do/pages/forgot_password.dart';
+import 'package:to_do/pages/home_page.dart';
 
 class SignInContent extends StatefulWidget {
   const SignInContent({super.key});
@@ -21,56 +20,99 @@ class _SignInContentState extends State<SignInContent> {
   final passwordController = TextEditingController();
 
   //sign in user
+  // void userSignIn() async {
+  //   //circular progress indicator
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return const Center(
+  //         child: CircularProgressIndicator(),
+  //       );
+  //     },
+  //   );
+
+  //   try {
+  //     await FirebaseAuth.instance.signInWithEmailAndPassword(
+  //       email: usernameController.text,
+  //       password: passwordController.text,
+  //     );
+  //   } on FirebaseAuthException catch (e) {
+  //     if (e.code == 'user-not-found' || e.code == 'wrong-password') {
+  //       //wrongEmailOrPassword();
+  //     }
+  //   }
+
+  //   //pop circular progress indicator
+  //   Navigator.pop(context);
+  // }
+
   void userSignIn() async {
-    //circular progress indicator
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      },
-    );
+    if (usernameController.text.isEmpty || passwordController.text.isEmpty) {
+      wrongInputlAlert('Please fill all the fields');
+      return;
+    }
+
+    // showDialog(
+    //   context: context,
+    //   builder: (context) {
+    //     return const Center(
+    //       child: CircularProgressIndicator(),
+    //     );
+    //   },
+    // );
 
     try {
+      // Sign in
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: usernameController.text,
         password: passwordController.text,
       );
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found' || e.code == 'wrong-password') {
-        wrongEmailOrPassword();
+
+      // Sign-in successful
+      if (mounted) {
+        //setvalidity();
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Home(),
+          ),
+        );
+      }
+    } on FirebaseAuthException catch (ex) {
+      // Handle sign-in errors
+      if (ex.code == 'user-not-found' || ex.code == 'wrong-password') {
+        wrongInputlAlert('Invalid username or password');
+      } else {
+        wrongInputlAlert('Invalid username or password');
       }
     }
-
-    //pop circular progress indicator
-    Navigator.pop(context);
   }
 
   //wrong email or password dialog box
-  void wrongEmailOrPassword() {
+  void wrongInputlAlert(String error) {
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(
-              'Wrong email or password',
-              style: GoogleFonts.ubuntu(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colours().unSelectedText,
-              ),
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            'Wronng Credentials',
+            style: GoogleFonts.ubuntu(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              color: Colours().unSelectedText,
             ),
-            content: Text(
-              'Please check your email and password and try again',
-              style: GoogleFonts.ubuntu(
-                fontSize: 15,
-                //fontWeight: FontWeight.bold,
-                color: Colours().unSelectedText,
-              ),
+          ),
+          content: Text(
+            'Please check your Email and Password and try again',
+            style: GoogleFonts.ubuntu(
+              fontSize: 20,
+              //fontWeight: FontWeight.bold,
+              color: Colours().unSelectedText,
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -159,7 +201,7 @@ class _SignInContentState extends State<SignInContent> {
                 ),
               ],
             ),
-            const SizedBox(height: 110),
+            const SizedBox(height: 85),
             //sign in button
             MainButton(
               onTap: userSignIn,

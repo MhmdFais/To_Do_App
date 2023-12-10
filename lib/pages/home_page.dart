@@ -19,22 +19,22 @@ class _HomeState extends State<Home> {
   String? email;
 
   //get user first name from firebase
-  Future getUserFirstName() async {
-    email = FirebaseAuth.instance.currentUser!.email;
-    final QuerySnapshot result = await FirebaseFirestore.instance
-        .collection('users')
-        .where('email', isEqualTo: email)
-        .limit(1)
-        .get();
-    setState(() {
-      firstName = result.docs[0].get('firstName');
-    });
-  }
+  // Future getUserFirstName() async {
+  //   email = FirebaseAuth.instance.currentUser!.email;
+  //   final QuerySnapshot result = await FirebaseFirestore.instance
+  //       .collection('users')
+  //       .where('email', isEqualTo: email)
+  //       .limit(1)
+  //       .get();
+  //   setState(() {
+  //     firstName = result.docs[0].get('firstName');
+  //   });
+  // }
 
   @override
   void initState() {
     super.initState();
-    getUserFirstName();
+    //getUserFirstName();
   }
 
   @override
@@ -55,14 +55,14 @@ class _HomeState extends State<Home> {
               ),
             ),
             const SizedBox(width: 5),
-            Text(
-              firstName,
-              style: GoogleFonts.ubuntu(
-                fontSize: 30,
-                //fontWeight: FontWeight.bold,
-                color: Colours().unSelectedText,
-              ),
-            ),
+            // Text(
+            //   firstName,
+            //   style: GoogleFonts.ubuntu(
+            //     fontSize: 30,
+            //     //fontWeight: FontWeight.bold,
+            //     color: Colours().unSelectedText,
+            //   ),
+            // ),
           ],
         ),
       ),

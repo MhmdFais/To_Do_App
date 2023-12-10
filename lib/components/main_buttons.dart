@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:to_do/components/colors.dart';
-import 'package:to_do/components/colors.dart';
 
 class MainButton extends StatelessWidget {
   final void Function()? onTap;
@@ -19,7 +18,7 @@ class MainButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 50,
+        height: 52,
         width: 400,
         decoration: BoxDecoration(
           color: Colours().buttonFill,

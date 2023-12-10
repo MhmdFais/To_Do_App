@@ -19,7 +19,7 @@ class StyledButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 40,
-      width: 120,
+      width: 140,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
         border: Border.all(

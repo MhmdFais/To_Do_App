@@ -39,53 +39,55 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   //wrong email or password dialog box
   void wrongEmail() async {
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(
-              'Wrong email or password',
-              style: GoogleFonts.ubuntu(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colours().unSelectedText,
-              ),
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            'Wrong email or password',
+            style: GoogleFonts.ubuntu(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colours().unSelectedText,
             ),
-            content: Text(
-              'Please check your email and try again',
-              style: GoogleFonts.ubuntu(
-                fontSize: 15,
-                //fontWeight: FontWeight.bold,
-                color: Colours().unSelectedText,
-              ),
+          ),
+          content: Text(
+            'Please check your email and try again',
+            style: GoogleFonts.ubuntu(
+              fontSize: 15,
+              //fontWeight: FontWeight.bold,
+              color: Colours().unSelectedText,
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 
   //email send dialog box
   void emailSent() async {
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(
-              'Email sent',
-              style: GoogleFonts.ubuntu(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colours().unSelectedText,
-              ),
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            'Email sent',
+            style: GoogleFonts.ubuntu(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colours().unSelectedText,
             ),
-            content: Text(
-              'Please check your email and follow the instructions to reset your password',
-              style: GoogleFonts.ubuntu(
-                fontSize: 15,
-                //fontWeight: FontWeight.bold,
-                color: Colours().unSelectedText,
-              ),
+          ),
+          content: Text(
+            'Please check your email and follow the instructions to reset your password',
+            style: GoogleFonts.ubuntu(
+              fontSize: 15,
+              //fontWeight: FontWeight.bold,
+              color: Colours().unSelectedText,
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -146,7 +148,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 obscureText: false,
               ),
               //reset password button
-              const SizedBox(height: 145),
+              const SizedBox(height: 124),
               MainButton(
                 onTap: passwordReset,
                 text: 'Continue',
