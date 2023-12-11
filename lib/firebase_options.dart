@@ -67,6 +67,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '641103722840',
     projectId: 'planitt',
     storageBucket: 'planitt.appspot.com',
+    androidClientId: '641103722840-3ia9vj5q7kpd885ohmqnf2pagfsk4mbg.apps.googleusercontent.com',
+    iosClientId: '641103722840-emuf3hd0o8cpg47hc7nhtgjoej734o1b.apps.googleusercontent.com',
     iosBundleId: 'com.example.toDo',
   );
 
@@ -76,6 +78,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '641103722840',
     projectId: 'planitt',
     storageBucket: 'planitt.appspot.com',
+    androidClientId: '641103722840-3ia9vj5q7kpd885ohmqnf2pagfsk4mbg.apps.googleusercontent.com',
+    iosClientId: '641103722840-pjp5btps2hgpo1r00obhtg0pevqjrbeo.apps.googleusercontent.com',
     iosBundleId: 'com.example.toDo.RunnerTests',
   );
 }

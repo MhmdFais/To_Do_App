@@ -5,8 +5,10 @@ import 'package:to_do/components/colors.dart';
 import 'package:to_do/components/main_buttons.dart';
 import 'package:to_do/components/signin_with.dart';
 import 'package:to_do/components/text_field.dart';
+import 'package:to_do/pages/bottom_navigation.dart';
 import 'package:to_do/pages/forgot_password.dart';
 import 'package:to_do/pages/home_page.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class SignInContent extends StatefulWidget {
   const SignInContent({super.key});
@@ -18,6 +20,7 @@ class SignInContent extends StatefulWidget {
 class _SignInContentState extends State<SignInContent> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   //sign in user
   // void userSignIn() async {
@@ -74,7 +77,7 @@ class _SignInContentState extends State<SignInContent> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => Home(),
+            builder: (context) => const BottomNavigation(),
           ),
         );
       }
@@ -113,6 +116,40 @@ class _SignInContentState extends State<SignInContent> {
         );
       },
     );
+  }
+
+  //sign in with google
+  Future<UserCredential> signInWithGoogle() async {
+    // try {
+    //   GoogleAuthProvider googleProvider = GoogleAuthProvider();
+    //   _auth.signInWithPopup(googleProvider);
+    // } catch (e) {
+    //   print(e);
+    // }
+
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _auth.authStateChanges().listen((event) {
+      setState(() {});
+    });
   }
 
   @override
@@ -183,23 +220,26 @@ class _SignInContentState extends State<SignInContent> {
             ),
             const SizedBox(height: 10),
             //sign in with google and apple
-            Column(
-              children: [
-                Center(
-                  child: Text(
-                    'Or sign in with',
-                    style: GoogleFonts.ubuntu(
-                      fontSize: 18,
-                      color: Colours().unSelectedText,
+            GestureDetector(
+              onTap: signInWithGoogle,
+              child: Column(
+                children: [
+                  Center(
+                    child: Text(
+                      'Or sign up with',
+                      style: GoogleFonts.ubuntu(
+                        fontSize: 18,
+                        color: Colours().unSelectedText,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 15),
-                const SignInWith(
-                  text: 'Sign in with Google',
-                  image: 'lib/images/google.png',
-                ),
-              ],
+                  const SizedBox(height: 15),
+                  const SignInWith(
+                    text: 'Google',
+                    image: 'lib/images/google.png',
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 85),
             //sign in button

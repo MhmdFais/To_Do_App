@@ -10,23 +10,23 @@ class AddTask extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colours().primary,
-      appBar: AppBar(
-        backgroundColor: Colours().primary,
-        elevation: 0,
-        centerTitle: true,
-        title: Text(
-          'Add Task',
-          style: GoogleFonts.ubuntu(
-            fontSize: 30,
-            //fontWeight: FontWeight.bold,
-            color: Colours().unSelectedText,
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 22),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            //FormField(builder: builder),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+            Center(
+              child: Text(
+                'Add a new task!',
+                style: GoogleFonts.ubuntu(
+                  fontSize: 25,
+                  //fontWeight: FontWeight.bold,
+                  color: Colours().unSelectedText,
+                ),
+              ),
+            ),
           ],
         ),
       ),
