@@ -3,7 +3,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:to_do/components/colors.dart';
 import 'package:to_do/pages/addTask_page.dart';
 import 'package:to_do/pages/home_page.dart';
-import 'package:to_do/pages/tasks.dart';
+import 'package:to_do/pages/Remainder.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({super.key});
@@ -15,7 +15,7 @@ class BottomNavigation extends StatefulWidget {
 class _BottomNavigationState extends State<BottomNavigation> {
   int currentIndex = 0;
 
-  List<Widget> pages = [const Home(), const AddTask(), const Task()];
+  List<Widget> pages = [const Home(), const AddTask(), const Remainder()];
 
   void onTap(int index) {
     setState(() {
@@ -53,8 +53,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
               //textColor: Colours().unSelectedText,
             ),
             GButton(
-              icon: Icons.task_alt_outlined,
-              text: 'Tasks',
+              icon: Icons.calendar_month_outlined,
+              text: 'Plan',
               iconColor: Colours().borderColor,
               //textColor: Colours().unSelectedText,
             ),

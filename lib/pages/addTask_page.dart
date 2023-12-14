@@ -118,7 +118,7 @@ class _AddTaskState extends State<AddTask> {
               SizedBox(height: MediaQuery.of(context).size.height * 0.05),
               Center(
                 child: Text(
-                  'Add a new task!',
+                  'Add tasks!',
                   style: GoogleFonts.ubuntu(
                     fontSize: 25,
                     //fontWeight: FontWeight.bold,
