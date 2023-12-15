@@ -141,7 +141,7 @@ class _AddTaskState extends State<AddTask> {
               TextField(
                 controller: taskNameController,
                 obscureText: false,
-                maxLength: 20,
+                maxLength: 25,
                 maxLengthEnforcement: MaxLengthEnforcement.enforced,
                 cursorHeight: 24,
                 decoration: InputDecoration(

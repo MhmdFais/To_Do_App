@@ -7,8 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:to_do/components/colors.dart';
 import 'package:to_do/components/event_card.dart';
-import 'package:to_do/components/remainder_page_else.dart';
-import 'package:to_do/pages/addTask_page.dart';
 
 class Remainder extends StatefulWidget {
   const Remainder({super.key});
@@ -78,29 +76,6 @@ class _RemainderState extends State<Remainder> {
     }
   }
 
-  //function to fetch task priority
-  // Future<void> fetchTaskPriority() async {
-  //   try {
-  //     QuerySnapshot<Map<String, dynamic>> querySnapshot =
-  //         await FirebaseFirestore.instance
-  //             .collection('users')
-  //             .doc(FirebaseAuth.instance.currentUser!.uid)
-  //             .collection('task')
-  //             .get();
-
-  //     //extract the dates from the query snapshot
-  //     querySnapshot.docs.forEach((doc) {
-  //       taskPriority.add(doc['taskPriority']);
-  //     });
-
-  //     setState(() {});
-
-  //     print(taskPriority);
-  //   } catch (e) {
-  //     //print('Error fetching user dates' + e.toString());
-  //   }
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -138,9 +113,9 @@ class _RemainderState extends State<Remainder> {
               width: 80,
               initialSelectedDate: DateTime.now(),
               selectionColor: Colours().calenderFillColour,
-              // activeDates: [
-              //   for (var date in userTaskDates) DateTime.parse(date)
-              // ],
+              activeDates: [
+                for (var date in userTaskDates) DateTime.parse(date)
+              ],
               deactivatedColor: Colours().deActiveDateColour,
               monthTextStyle: GoogleFonts.ubuntu(
                 fontSize: 14,
@@ -192,32 +167,11 @@ class _RemainderState extends State<Remainder> {
             //display tasks for the selected date in a list view if any or else display a message
             //if no dates has been selected then display no date has been selected
             calenderSelectedDate == null
-                ? Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 22.0),
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 100),
-                        child: Text(
-                          'No date selected',
-                          style: GoogleFonts.ubuntu(
-                            fontSize: 22,
-                            //fontWeight: FontWeight.bold,
-                            color: Colours().unSelectedText,
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
+                ? _emptyDate()
                 : tasksForSelectedDate.isEmpty
-                    ? DirectToAddTaskPage(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const AddTask(),
-                          ),
-                        ),
-                      )
-                    : _timeline(tasksForSelectedDate, taskPriority),
+                    ? _taskEmpty()
+                    : _timeline(tasksForSelectedDate, taskPriority,
+                        calenderSelectedDate!),
           ],
         ),
       ),
@@ -226,7 +180,8 @@ class _RemainderState extends State<Remainder> {
 }
 
 // return date line method for code simplicity
-_timeline(List<String> tasksForSelectedDate, List<String> taskPriority) {
+_timeline(List<String> tasksForSelectedDate, List<String> taskPriority,
+    DateTime calenderSelectedDate) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 22.0),
     child: ListView.builder(
@@ -253,6 +208,7 @@ _timeline(List<String> tasksForSelectedDate, List<String> taskPriority) {
             endChild: EventCard(
               taskName: tasksForSelectedDate[index],
               taskPriority: taskPriority[index],
+              selectedDate: calenderSelectedDate!,
             ),
           ),
         );
@@ -261,50 +217,69 @@ _timeline(List<String> tasksForSelectedDate, List<String> taskPriority) {
   );
 }
 
-// _taskEmpty() {
-//   return Padding(
-//     padding: const EdgeInsets.symmetric(horizontal: 22.0),
-//     child: Padding(
-//       padding: const EdgeInsets.only(top: 120),
-//       child: Column(
-//         children: [
-//           Center(
-//             child: Text(
-//               'No tasks for this date',
-//               style: GoogleFonts.ubuntu(
-//                 fontSize: 22,
-//                 //fontWeight: FontWeight.bold,
-//                 color: Colours().unSelectedText,
-//               ),
-//             ),
-//           ),
-//           const SizedBox(height: 25),
-//           GestureDetector(
-//             onTap: () {},
-//             child: Container(
-//               height: 50,
-//               width: 200,
-//               decoration: BoxDecoration(
-//                 borderRadius: BorderRadius.circular(15),
-//                 border: Border.all(
-//                   color: Colours().borderColor,
-//                   width: 2,
-//                 ),
-//               ),
-//               child: Center(
-//                 child: Text(
-//                   'Add a task',
-//                   style: GoogleFonts.ubuntu(
-//                     fontSize: 22,
-//                     //fontWeight: FontWeight.bold,
-//                     color: Colours().unSelectedText,
-//                   ),
-//                 ),
-//               ),
-//             ),
-//           ),
-//         ],
-//       ),
-//     ),
-//   );
-// }
+_taskEmpty() {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 22.0),
+    child: Padding(
+      padding: const EdgeInsets.only(top: 120),
+      child: Column(
+        children: [
+          // Center(
+          //   child: Text(
+          //     'No tasks for this date',
+          //     style: GoogleFonts.ubuntu(
+          //       fontSize: 22,
+          //       //fontWeight: FontWeight.bold,
+          //       color: Colours().unSelectedText,
+          //     ),
+          //   ),
+          // ),
+          const SizedBox(height: 25),
+          GestureDetector(
+            onTap: () {},
+            child: Container(
+              height: 50,
+              width: 200,
+              // decoration: BoxDecoration(
+              //   borderRadius: BorderRadius.circular(15),
+              //   border: Border.all(
+              //     color: Colours().borderColor,
+              //     width: 2,
+              //   ),
+              // ),
+              child: Center(
+                  // child: Text(
+                  //   'Add a task',
+                  //   style: GoogleFonts.ubuntu(
+                  //     fontSize: 22,
+                  //     //fontWeight: FontWeight.bold,
+                  //     color: Colours().unSelectedText,
+                  //   ),
+                  // ),
+                  ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+_emptyDate() {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 22.0),
+    child: Center(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 100),
+        // child: Text(
+        //   'No date selected',
+        //   style: GoogleFonts.ubuntu(
+        //     fontSize: 22,
+        //     //fontWeight: FontWeight.bold,
+        //     color: Colours().unSelectedText,
+        //   ),
+        // ),
+      ),
+    ),
+  );
+}

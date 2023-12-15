@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:to_do/components/colors.dart';
@@ -5,11 +7,15 @@ import 'package:to_do/components/colors.dart';
 class EventCard extends StatefulWidget {
   final String taskName;
   final String taskPriority;
+  //final String taskDetails;
+  final DateTime selectedDate;
 
   const EventCard({
     super.key,
     required this.taskName,
     required this.taskPriority,
+    //required this.taskDetails,
+    required this.selectedDate,
   });
 
   @override
@@ -17,8 +23,125 @@ class EventCard extends StatefulWidget {
 }
 
 class _EventCardState extends State<EventCard> {
-  void clicked() {
-    print('clicked');
+  List<String> taskDetails = [];
+
+  //function to handle delete icon
+  void delteConfirmMessadeBox() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Delete Task',
+            style: GoogleFonts.ubuntu(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: Colours().unSelectedText,
+            ),
+          ),
+          content: Text(
+            'Are you sure you want to delete this task?',
+            style: GoogleFonts.ubuntu(
+              fontSize: 18,
+              //fontWeight: FontWeight.bold,
+              color: Colours().unSelectedText,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Cancel',
+                style: GoogleFonts.ubuntu(
+                  fontSize: 18,
+                  //fontWeight: FontWeight.bold,
+                  color: Colours().unSelectedText,
+                ),
+              ),
+            ),
+            Container(
+              height: 45,
+              width: 85,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colours().deleteTextColour,
+              ),
+              child: TextButton(
+                onPressed: () {
+                  deleteTask();
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  'Delete',
+                  style: GoogleFonts.ubuntu(
+                    fontSize: 18,
+                    //fontWeight: FontWeight.bold,
+                    color: Colours().primary,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  //delete the selected task from firestore
+  void deleteTask() async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('task')
+          .where('taskName', isEqualTo: widget.taskName)
+          .where('taskPriority', isEqualTo: widget.taskPriority)
+          .where('taskDate',
+              isEqualTo: widget.selectedDate.toString().substring(0, 10))
+          .get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((doc) {
+          doc.reference.delete();
+        });
+      });
+
+      print('task deleted');
+    } catch (e) {
+      print('error deleting task + $e');
+    }
+  }
+
+  //get the taskDetails for the selected task
+  Future<void> fetchTaskDetails() async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('task')
+          .where('taskName', isEqualTo: widget.taskName)
+          .where('taskPriority', isEqualTo: widget.taskPriority)
+          .where('taskDate',
+              isEqualTo: widget.selectedDate.toString().substring(0, 10))
+          .get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((doc) {
+          taskDetails.add(doc['taskDetails']);
+        });
+      });
+
+      print('task details fetched');
+    } catch (e) {
+      print('error fetching task details + $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    //deleteTask();
+    fetchTaskDetails();
   }
 
   @override
@@ -90,7 +213,7 @@ class _EventCardState extends State<EventCard> {
                   children: [
                     //edit icon
                     GestureDetector(
-                      onTap: clicked,
+                      onTap: () {},
                       child: const Icon(
                         Icons.edit,
                         color: Colors.grey,
@@ -99,7 +222,7 @@ class _EventCardState extends State<EventCard> {
                     const SizedBox(width: 15),
                     //delete icon
                     GestureDetector(
-                      onTap: clicked,
+                      onTap: delteConfirmMessadeBox,
                       child: const Icon(
                         Icons.delete,
                         color: Colors.grey,
