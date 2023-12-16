@@ -26,6 +26,10 @@ class Colours extends StatelessWidget {
   final Color lowPriority = Color.fromARGB(255, 78, 249, 163);
   final Color taskCradIconColour = Colors.grey.shade700;
   final Color deleteTextColour = Colors.red;
+  final Color alerDialogColour = Colors.grey.shade100;
+  final Color alertTextRoundColour = Colors.grey.shade500;
+  final Color alertHintTextColour = Colors.grey.shade500;
+  final Color alerEditButtonColour = Colors.purple.shade200;
 
   @override
   Widget build(BuildContext context) {

@@ -208,7 +208,8 @@ _timeline(List<String> tasksForSelectedDate, List<String> taskPriority,
             endChild: EventCard(
               taskName: tasksForSelectedDate[index],
               taskPriority: taskPriority[index],
-              selectedDate: calenderSelectedDate!,
+              selectedDate: calenderSelectedDate,
+              isTaskDeleted: false,
             ),
           ),
         );
