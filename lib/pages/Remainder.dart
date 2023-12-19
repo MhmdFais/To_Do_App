@@ -157,7 +157,7 @@ class _RemainderState extends State<Remainder> {
                     //edit icon
                     GestureDetector(
                       onTap: () => showTaskDetails(tasksForSelectedDate[index],
-                          taskDetails[index], taskPriority[index]),
+                          taskDetails[index], taskPriority[index], index),
                       child: const Icon(
                         Icons.edit,
                         color: Colors.grey,
@@ -276,7 +276,7 @@ class _RemainderState extends State<Remainder> {
 
   //task details when edit button is pressed
   void showTaskDetails(
-      String taskName, String taskDetails, String taskPriority) {
+      String taskName, String taskDetails, String taskPriority, int index) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -452,7 +452,7 @@ class _RemainderState extends State<Remainder> {
                 child: TextButton(
                   onPressed: () {
                     updateTask(taskNameEdit.text, taskDetailsEdit.text,
-                        taskName, taskPriority);
+                        taskName, taskPriority, index);
                     taskNameEdit.clear();
                     taskDetailsEdit.clear();
                     Navigator.of(context).pop();
@@ -489,14 +489,14 @@ class _RemainderState extends State<Remainder> {
 
   //function to update the task
   void updateTask(String newTaskName, String newTaskDetails, String taskName,
-      String taskPriority) {
+      String taskPriorityTask, int index) {
     try {
       FirebaseFirestore.instance
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection('task')
           .where('taskName', isEqualTo: taskName)
-          .where('taskPriority', isEqualTo: taskPriority)
+          .where('taskPriority', isEqualTo: taskPriorityTask)
           .where('taskDate',
               isEqualTo: calenderSelectedDate.toString().substring(0, 10))
           .get()
@@ -510,8 +510,12 @@ class _RemainderState extends State<Remainder> {
         });
       });
 
-      //fetching the updated tasks
-      fetchTasksForSelectedDate(calenderSelectedDate!);
+      //update the local state immediately
+      setState(() {
+        tasksForSelectedDate[index] = newTaskName;
+        taskDetails[index] = newTaskDetails;
+        taskPriority[index] = taskPriorityString!;
+      });
 
       print('Task updated successfully');
     } catch (e) {
@@ -556,9 +560,9 @@ class _RemainderState extends State<Remainder> {
               width: 80,
               initialSelectedDate: DateTime.now(),
               selectionColor: Colours().calenderFillColour,
-              // activeDates: [
-              //   for (var date in userTaskDates) DateTime.parse(date)
-              // ],
+              activeDates: [
+                for (var date in userTaskDates) DateTime.parse(date)
+              ],
               deactivatedColor: Colours().deActiveDateColour,
               monthTextStyle: GoogleFonts.ubuntu(
                 fontSize: 14,
