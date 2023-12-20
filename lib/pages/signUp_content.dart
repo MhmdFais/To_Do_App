@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:to_do/components/colors.dart';
@@ -48,6 +47,7 @@ class _SignUpContentState extends State<SignUpContent> {
         );
 
         //navigate to verify page
+        // ignore: use_build_context_synchronously
         Navigator.push(
           context,
           MaterialPageRoute(

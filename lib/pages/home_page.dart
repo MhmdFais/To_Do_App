@@ -18,20 +18,29 @@ class _HomeState extends State<Home> {
   List<String> tasks = [];
   List<String> taskPriority = [];
   List<String> taskDetails = [];
-  bool isDeleted = false;
+  List<bool> taskStatus = [];
   void Function()? onTap;
 
-  //get user first name from firebase
+  //get firstname of the user
   Future<void> getUserFirstName() async {
-    final User? user = FirebaseAuth.instance.currentUser;
-    final String uid = user!.uid;
-    final DocumentSnapshot<Map<String, dynamic>> userDoc =
-        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    String email = FirebaseAuth.instance.currentUser!.email.toString();
+    try {
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+          await FirebaseFirestore.instance
+              .collection('users')
+              .where('email', isEqualTo: email)
+              .get();
 
-    setState(() {
-      firstName = userDoc.data()!['firstName'];
-      email = user.email;
-    });
+      setState(() {
+        firstName = querySnapshot.docs[0]['firstName'];
+      });
+
+      print('username is: $firstName');
+
+      print('getUserFirstName success');
+    } catch (e) {
+      print('getUserFirstName error: $e');
+    }
   }
 
   //retrieve tasks for today from firebase
@@ -59,6 +68,10 @@ class _HomeState extends State<Home> {
       taskDetails = querySnapshot.docs
           .map((doc) => doc['taskDetails'] as String)
           .toList();
+
+      //Extract the task status
+      taskStatus =
+          querySnapshot.docs.map((doc) => doc['taskStatus'] as bool).toList();
     } catch (e) {
       print('fetchTasksForToday error: $e');
     }
@@ -102,7 +115,12 @@ class _HomeState extends State<Home> {
                 ),
                 SizedBox(width: MediaQuery.of(context).size.width * 0.04),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    setState(() {
+                      taskStatus[index] = !taskStatus[index];
+                      print('task status after press: ${taskStatus[index]}');
+                    });
+                  },
                   child: Container(
                     height: 40,
                     width: 40,
@@ -114,6 +132,13 @@ class _HomeState extends State<Home> {
                         width: 1,
                       ),
                     ),
+                    child: taskStatus[index]
+                        ? const Icon(
+                            Icons.check,
+                            color: Colors.black,
+                            size: 28,
+                          )
+                        : Container(),
                   ),
                 ),
                 SizedBox(width: MediaQuery.of(context).size.width * 0.04),
@@ -127,7 +152,9 @@ class _HomeState extends State<Home> {
                         style: GoogleFonts.ubuntu(
                           fontSize: 22,
                           //fontWeight: FontWeight.bold,
-                          color: Colours().unSelectedText,
+                          color: taskStatus[index]
+                              ? Colours().checkedColour
+                              : Colours().unSelectedText,
                         ),
                       ),
                       const SizedBox(height: 5),
@@ -136,28 +163,72 @@ class _HomeState extends State<Home> {
                         style: GoogleFonts.ubuntu(
                           fontSize: 18,
                           //fontWeight: FontWeight.bold,
-                          color: Colours().unSelectedText,
+                          color: taskStatus[index]
+                              ? Colours().checkedColour
+                              : Colours().unSelectedText,
                         ),
                       ),
                     ],
                   ),
                 ),
+                //SizedBox(width: MediaQuery.of(context).size.width * 0.04),
               ],
             ),
             IconButton(
               onPressed: () {
-                showTaskDetails(index);
+                taskStatus[index] ? deleteTask(index) : showTaskDetails(index);
               },
-              icon: const Icon(
-                Icons.more_vert,
-                size: 35,
-                color: Colors.grey,
-              ),
+              icon: taskStatus[index]
+                  ? Icon(
+                      Icons.delete,
+                      color: Colors.grey.shade400,
+                      size: 35,
+                    )
+                  : Icon(
+                      Icons.more_vert,
+                      color: Colors.grey.shade400,
+                      size: 35,
+                    ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  //delete task
+  void deleteTask(int index) async {
+    try {
+      String selectedTask = tasks[index];
+      String selectedTaskPriority = taskPriority[index];
+      String selectedTaskDetails = taskDetails[index];
+      String formattedDate = DateTime.now().toString().substring(0, 10);
+
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('task')
+          .where('taskName', isEqualTo: selectedTask)
+          .where('taskPriority', isEqualTo: selectedTaskPriority)
+          .where('taskDetails', isEqualTo: selectedTaskDetails)
+          .where('taskDate', isEqualTo: formattedDate)
+          .get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((doc) {
+          doc.reference.delete();
+        });
+      });
+
+      setState(() {
+        tasks.removeAt(index);
+        taskPriority.removeAt(index);
+        taskDetails.removeAt(index);
+      });
+
+      print('task deleted successfullu in home page');
+    } catch (e) {
+      print('task deletion failed in home page: $e');
+    }
   }
 
   //show task details
@@ -279,7 +350,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    //getUserFirstName();
+    getUserFirstName();
     fetchTasksForToday();
   }
 
@@ -291,22 +362,35 @@ class _HomeState extends State<Home> {
         backgroundColor: Colours().primary,
         elevation: 0,
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Hello!',
-              style: GoogleFonts.pacifico(
-                fontSize: 25,
-                //fontWeight: FontWeight.bold,
-                color: Colours().unSelectedText,
-              ),
+            Row(
+              children: [
+                Text(
+                  'Hello!',
+                  style: GoogleFonts.pacifico(
+                    fontSize: 25,
+                    //fontWeight: FontWeight.bold,
+                    color: Colours().unSelectedText,
+                  ),
+                ),
+                const SizedBox(width: 5),
+                Text(
+                  firstName,
+                  style: GoogleFonts.pacifico(
+                    fontSize: 25,
+                    //fontWeight: FontWeight.bold,
+                    color: Colours().unSelectedText,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(width: 5),
-            Text(
-              firstName,
-              style: GoogleFonts.pacifico(
-                fontSize: 25,
-                //fontWeight: FontWeight.bold,
+            IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.account_circle_outlined,
                 color: Colours().unSelectedText,
+                size: 40,
               ),
             ),
           ],

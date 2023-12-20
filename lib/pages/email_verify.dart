@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:to_do/components/main_buttons.dart';
 import 'package:to_do/pages/home_page.dart';
 import 'package:to_do/pages/login_toggle_page.dart';
+import 'package:to_do/pages/bottom_navigation.dart';
 
 class EmailVerification extends StatefulWidget {
   late String email;
@@ -115,7 +116,7 @@ class _EmailVerificationState extends State<EmailVerification> {
   @override
   Widget build(BuildContext context) {
     if (isEmailVerified) {
-      return const Home();
+      return const BottomNavigation();
     } else {
       return Scaffold(
         backgroundColor: Colors.grey.shade100,
