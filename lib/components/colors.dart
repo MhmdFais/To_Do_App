@@ -32,6 +32,10 @@ class Colours extends StatelessWidget {
   final Color alerEditButtonColour = Colors.purple.shade200;
   final Color containerColour = Colors.grey.shade100;
   final Color checkedColour = Colors.grey.shade400;
+  final Color profilePicContainer = Colors.grey.shade300;
+  final Color settingsBorder = Colors.grey.shade300;
+  final Color settingIconColor = Colors.grey.shade500;
+  final Color settingTextColour = Colors.grey.shade800;
 
   @override
   Widget build(BuildContext context) {

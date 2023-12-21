@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:to_do/components/colors.dart';
+import 'package:to_do/pages/profile.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -386,7 +387,14 @@ class _HomeState extends State<Home> {
               ],
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Profile(),
+                  ),
+                );
+              },
               icon: Icon(
                 Icons.account_circle_outlined,
                 color: Colours().unSelectedText,
