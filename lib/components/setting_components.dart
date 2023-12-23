@@ -7,11 +7,12 @@ class SettingsMenu extends StatelessWidget {
   final IconData icon;
   final void Function()? onTap;
 
-  const SettingsMenu(
-      {super.key,
-      required this.title,
-      required this.icon,
-      required this.onTap});
+  const SettingsMenu({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {

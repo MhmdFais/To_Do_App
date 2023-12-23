@@ -55,15 +55,18 @@ class _SignUpContentState extends State<SignUpContent> {
               email: usernameController.text,
               firstName: firstNameController.text,
               lastName: lastNameController.text,
+              password: passwordController.text,
             ),
           ),
         );
+
+        print('User Created and forwarded to verify page');
       } else {
         wrongInputlAlert('Please check your password');
         return;
       }
     } catch (e) {
-      wrongInputlAlert(e.toString());
+      wrongInputlAlert('Email already exists');
     }
   }
 

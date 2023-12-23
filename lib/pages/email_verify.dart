@@ -8,17 +8,21 @@ import 'package:to_do/components/main_buttons.dart';
 import 'package:to_do/pages/home_page.dart';
 import 'package:to_do/pages/login_toggle_page.dart';
 import 'package:to_do/pages/bottom_navigation.dart';
+import 'package:to_do/pages/profile_photo.dart';
 
 class EmailVerification extends StatefulWidget {
   late String email;
   late String firstName;
   late String lastName;
+  late String password;
 
-  EmailVerification(
-      {required this.email,
-      required this.firstName,
-      required this.lastName,
-      super.key});
+  EmailVerification({
+    required this.email,
+    required this.firstName,
+    required this.lastName,
+    required this.password,
+    super.key,
+  });
 
   @override
   State<EmailVerification> createState() => _EmailVerificationState();
@@ -87,6 +91,8 @@ class _EmailVerificationState extends State<EmailVerification> {
               'lastName': widget.lastName,
             });
           }
+
+          print('User verifiation email sent successfully');
         } catch (e) {
           print(e);
         }
