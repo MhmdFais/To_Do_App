@@ -8,6 +8,8 @@ import 'package:to_do/components/colors.dart';
 import 'package:to_do/components/setting_components.dart';
 import 'package:to_do/components/utils.dart';
 import 'package:to_do/pages/auth_page.dart';
+import 'package:to_do/settings/change_password.dart';
+import 'package:to_do/settings/delete_account.dart';
 import 'package:to_do/settings/profie_settings.dart';
 
 class Profile extends StatefulWidget {
@@ -126,7 +128,7 @@ class _ProfileState extends State<Profile> {
               ),
               const SizedBox(height: 10),
               Container(
-                height: 300,
+                height: 250,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -146,14 +148,16 @@ class _ProfileState extends State<Profile> {
                       },
                     ),
                     SettingsMenu(
-                      title: 'Email',
-                      icon: Icons.email_outlined,
-                      onTap: () {},
-                    ),
-                    SettingsMenu(
                       title: 'Password',
                       icon: Icons.lock_outline,
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ChangePassword(),
+                          ),
+                        );
+                      },
                     ),
                     SettingsMenu(
                       title: 'Language',
@@ -163,7 +167,14 @@ class _ProfileState extends State<Profile> {
                     SettingsMenu(
                       title: 'Delete Account',
                       icon: Icons.heart_broken,
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const DeleteAccount(),
+                          ),
+                        );
+                      },
                     ),
                     SettingsMenu(
                       title: 'Sign Out',
