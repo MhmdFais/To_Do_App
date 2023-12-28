@@ -16,6 +16,21 @@ class _DeleteAccountState extends State<DeleteAccount> {
   final passwordController = TextEditingController();
 
   void deleteAccount() async {
+    //check if the current password entered is same password as the one in the databas
+    AuthCredential credential = EmailAuthProvider.credential(
+        email: FirebaseAuth.instance.currentUser!.email!,
+        password: passwordController.text);
+
+    //if the current password is wrong then show error message
+    try {
+      await FirebaseAuth.instance.currentUser!
+          .reauthenticateWithCredential(credential);
+    } catch (e) {
+      print('Error: $e');
+      errorMessage('Please check your password');
+      return;
+    }
+
     String password = passwordController.text;
     if (password.isEmpty) {
       errorMessage('Please enter password');

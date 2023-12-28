@@ -128,7 +128,7 @@ class _ProfileState extends State<Profile> {
               ),
               const SizedBox(height: 10),
               Container(
-                height: 250,
+                height: 200,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -159,11 +159,11 @@ class _ProfileState extends State<Profile> {
                         );
                       },
                     ),
-                    SettingsMenu(
-                      title: 'Language',
-                      icon: Icons.language_outlined,
-                      onTap: () {},
-                    ),
+                    // SettingsMenu(
+                    //   title: 'Language',
+                    //   icon: Icons.language_outlined,
+                    //   onTap: () {},
+                    // ),
                     SettingsMenu(
                       title: 'Delete Account',
                       icon: Icons.heart_broken,

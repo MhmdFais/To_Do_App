@@ -21,6 +21,8 @@ class _HomeState extends State<Home> {
   List<String> taskDetails = [];
   List<bool> taskStatus = [];
   void Function()? onTap;
+  //bool isSelectedList = false;
+  List isSelectedList = [];
 
   //get firstname of the user
   Future<void> getUserFirstName() async {
@@ -79,7 +81,8 @@ class _HomeState extends State<Home> {
   }
 
   //container for each task
-  taskContainer(int index) {
+  taskContainer(
+      String taskName, String taskPriority, String taskDetails, int index) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Container(
@@ -103,9 +106,9 @@ class _HomeState extends State<Home> {
                 Container(
                   width: 10,
                   decoration: BoxDecoration(
-                    color: taskPriority[index] == 'High'
+                    color: taskPriority == 'High'
                         ? Colours().highPriority
-                        : taskPriority[index] == 'Medium'
+                        : taskPriority == 'Medium'
                             ? Colours().mediumPriority
                             : Colours().lowPriority,
                     borderRadius: const BorderRadius.only(
@@ -115,32 +118,19 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 SizedBox(width: MediaQuery.of(context).size.width * 0.04),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      taskStatus[index] = !taskStatus[index];
-                      print('task status after press: ${taskStatus[index]}');
-                    });
+                //check box
+                Checkbox(
+                  value: isSelectedList[index],
+                  onChanged: (bool? value) {
+                    setState(
+                      () {
+                        isSelectedList[index] = value!;
+                        print('task status: ${isSelectedList[index]}');
+                      },
+                    );
                   },
-                  child: Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      color: Colours().primary,
-                      borderRadius: BorderRadius.circular(50),
-                      border: Border.all(
-                        color: Colours().taskCradIconColour,
-                        width: 1,
-                      ),
-                    ),
-                    child: taskStatus[index]
-                        ? const Icon(
-                            Icons.check,
-                            color: Colors.black,
-                            size: 28,
-                          )
-                        : Container(),
-                  ),
+                  activeColor: Colours().checkedColour,
+                  checkColor: Colours().primary,
                 ),
                 SizedBox(width: MediaQuery.of(context).size.width * 0.04),
                 Padding(
@@ -149,22 +139,22 @@ class _HomeState extends State<Home> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        tasks[index],
+                        taskName,
                         style: GoogleFonts.ubuntu(
                           fontSize: 22,
                           //fontWeight: FontWeight.bold,
-                          color: taskStatus[index]
+                          color: isSelectedList[index]
                               ? Colours().checkedColour
                               : Colours().unSelectedText,
                         ),
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        '${taskPriority[index]} Priority',
+                        '$taskPriority Priority',
                         style: GoogleFonts.ubuntu(
                           fontSize: 18,
                           //fontWeight: FontWeight.bold,
-                          color: taskStatus[index]
+                          color: isSelectedList[index]
                               ? Colours().checkedColour
                               : Colours().unSelectedText,
                         ),
@@ -177,9 +167,19 @@ class _HomeState extends State<Home> {
             ),
             IconButton(
               onPressed: () {
-                taskStatus[index] ? deleteTask(index) : showTaskDetails(index);
+                isSelectedList[index]
+                    ? deleteTask(
+                        taskName,
+                        taskPriority,
+                        taskDetails,
+                      )
+                    : showTaskDetails(
+                        taskName,
+                        taskPriority,
+                        taskDetails,
+                      );
               },
-              icon: taskStatus[index]
+              icon: isSelectedList[index]
                   ? Icon(
                       Icons.delete,
                       color: Colors.grey.shade400,
@@ -198,11 +198,12 @@ class _HomeState extends State<Home> {
   }
 
   //delete task
-  void deleteTask(int index) async {
+  void deleteTask(
+      String taskName, String taskPriorityPass, String taskDetailsPass) async {
     try {
-      String selectedTask = tasks[index];
-      String selectedTaskPriority = taskPriority[index];
-      String selectedTaskDetails = taskDetails[index];
+      String selectedTask = taskName;
+      String selectedTaskPriority = taskPriorityPass;
+      String selectedTaskDetails = taskDetailsPass;
       String formattedDate = DateTime.now().toString().substring(0, 10);
 
       await FirebaseFirestore.instance
@@ -221,9 +222,9 @@ class _HomeState extends State<Home> {
       });
 
       setState(() {
-        tasks.removeAt(index);
-        taskPriority.removeAt(index);
-        taskDetails.removeAt(index);
+        tasks.remove(selectedTask);
+        taskPriority.remove(selectedTaskPriority);
+        taskDetails.remove(selectedTaskDetails);
       });
 
       print('task deleted successfullu in home page');
@@ -233,7 +234,8 @@ class _HomeState extends State<Home> {
   }
 
   //show task details
-  void showTaskDetails(int index) {
+  void showTaskDetails(
+      String taskName, String taskPriorityPass, String taskDetailsPass) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -241,7 +243,7 @@ class _HomeState extends State<Home> {
           child: AlertDialog(
             title: Center(
               child: Text(
-                tasks[index],
+                taskName,
                 style: GoogleFonts.ubuntu(
                   fontSize: 22,
                   //fontWeight: FontWeight.bold,
@@ -274,7 +276,7 @@ class _HomeState extends State<Home> {
                   ),
                   child: Center(
                     child: Text(
-                      taskPriority[index],
+                      taskPriorityPass,
                       style: GoogleFonts.ubuntu(
                         fontSize: 20,
                         //fontWeight: FontWeight.bold,
@@ -306,7 +308,7 @@ class _HomeState extends State<Home> {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 5, left: 10),
                     child: Text(
-                      taskDetails[index],
+                      taskDetailsPass,
                       style: GoogleFonts.ubuntu(
                         fontSize: 20,
                         //fontWeight: FontWeight.bold,
@@ -455,7 +457,8 @@ class _HomeState extends State<Home> {
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: tasks.length,
                     itemBuilder: (context, index) {
-                      return taskContainer(index);
+                      return taskContainer(tasks[index], taskPriority[index],
+                          taskDetails[index], index);
                     },
                   );
                 } else {

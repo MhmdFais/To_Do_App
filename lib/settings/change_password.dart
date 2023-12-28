@@ -22,6 +22,21 @@ class _ChangePasswordState extends State<ChangePassword> {
     String newPassword = newPasswordController.text;
     String confirmPassword = confirmPasswordController.text;
 
+    //check if the current password entered is same password as the one in the databas
+    AuthCredential credential = EmailAuthProvider.credential(
+        email: FirebaseAuth.instance.currentUser!.email!,
+        password: oldPassword);
+
+    //if the current password is wrong then show error message
+    try {
+      await FirebaseAuth.instance.currentUser!
+          .reauthenticateWithCredential(credential);
+    } catch (e) {
+      print('Error: $e');
+      errorMessage('Please check your password');
+      return;
+    }
+
     if (oldPassword.isEmpty || newPassword.isEmpty || confirmPassword.isEmpty) {
       errorMessage('Please fill all the fields');
       return;
