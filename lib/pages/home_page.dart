@@ -119,19 +119,19 @@ class _HomeState extends State<Home> {
                 ),
                 SizedBox(width: MediaQuery.of(context).size.width * 0.04),
                 //check box
-                Checkbox(
-                  value: isSelectedList[index],
-                  onChanged: (bool? value) {
-                    setState(
-                      () {
-                        isSelectedList[index] = value!;
-                        print('task status: ${isSelectedList[index]}');
-                      },
-                    );
-                  },
-                  activeColor: Colours().checkedColour,
-                  checkColor: Colours().primary,
-                ),
+                // Checkbox(
+                //   value: isSelectedList[index],
+                //   onChanged: (bool? value) {
+                //     setState(
+                //       () {
+                //         isSelectedList[index] = value!;
+                //         print('task status: ${isSelectedList[index]}');
+                //       },
+                //     );
+                //   },
+                //   activeColor: Colours().checkedColour,
+                //   checkColor: Colours().primary,
+                // ),
                 SizedBox(width: MediaQuery.of(context).size.width * 0.04),
                 Padding(
                   padding: const EdgeInsets.only(top: 5),
@@ -143,9 +143,7 @@ class _HomeState extends State<Home> {
                         style: GoogleFonts.ubuntu(
                           fontSize: 22,
                           //fontWeight: FontWeight.bold,
-                          color: isSelectedList[index]
-                              ? Colours().checkedColour
-                              : Colours().unSelectedText,
+                          color: Colours().unSelectedText,
                         ),
                       ),
                       const SizedBox(height: 5),
@@ -154,9 +152,7 @@ class _HomeState extends State<Home> {
                         style: GoogleFonts.ubuntu(
                           fontSize: 18,
                           //fontWeight: FontWeight.bold,
-                          color: isSelectedList[index]
-                              ? Colours().checkedColour
-                              : Colours().unSelectedText,
+                          color: Colours().unSelectedText,
                         ),
                       ),
                     ],
@@ -165,35 +161,100 @@ class _HomeState extends State<Home> {
                 //SizedBox(width: MediaQuery.of(context).size.width * 0.04),
               ],
             ),
-            IconButton(
-              onPressed: () {
-                isSelectedList[index]
-                    ? deleteTask(
-                        taskName,
-                        taskPriority,
-                        taskDetails,
-                      )
-                    : showTaskDetails(
-                        taskName,
-                        taskPriority,
-                        taskDetails,
-                      );
-              },
-              icon: isSelectedList[index]
-                  ? Icon(
-                      Icons.delete,
-                      color: Colors.grey.shade400,
-                      size: 35,
-                    )
-                  : Icon(
-                      Icons.more_vert,
-                      color: Colors.grey.shade400,
-                      size: 35,
-                    ),
+            //Edit button
+            Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    showTaskDetails(taskName, taskPriority, taskDetails);
+                  },
+                  icon: Icon(
+                    Icons.info_outline_rounded,
+                    color: Colours().taskCradIconColour,
+                    size: 30,
+                  ),
+                ),
+                //delete button
+                IconButton(
+                  onPressed: () {
+                    delteConfirmMessadeBox(taskName, taskPriority, taskDetails);
+                  },
+                  icon: Icon(
+                    Icons.delete_outline_rounded,
+                    color: Colours().taskCradIconColour,
+                    size: 30,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
       ),
+    );
+  }
+
+  //delete conformation dialog
+  void delteConfirmMessadeBox(
+      String taskName, String taskPriority, String taskDetails) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Delete Task',
+            style: GoogleFonts.ubuntu(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: Colours().unSelectedText,
+            ),
+          ),
+          content: Text(
+            'Are you sure you want to delete this task?',
+            style: GoogleFonts.ubuntu(
+              fontSize: 18,
+              //fontWeight: FontWeight.bold,
+              color: Colours().unSelectedText,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Cancel',
+                style: GoogleFonts.ubuntu(
+                  fontSize: 18,
+                  //fontWeight: FontWeight.bold,
+                  color: Colours().unSelectedText,
+                ),
+              ),
+            ),
+            Container(
+              height: 45,
+              width: 85,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colours().deleteTextColour,
+              ),
+              child: TextButton(
+                onPressed: () {
+                  deleteTask(taskName, taskPriority, taskDetails);
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  'Delete',
+                  style: GoogleFonts.ubuntu(
+                    fontSize: 18,
+                    //fontWeight: FontWeight.bold,
+                    color: Colours().primary,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
